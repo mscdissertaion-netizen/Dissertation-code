@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@author: 
+@author: Chetan Mathias
 """
 
 import SimpleITK as sitk
@@ -172,5 +172,6 @@ sitk.WriteImage(phase_img, r"C:\Users\mathi\OneDrive\Desktop\Final Project\phase
 amp_img = sitk.GetImageFromArray(amplitude_map)
 amp_img.CopyInformation(func_ref)
 sitk.WriteImage(amp_img, 'amplitude_map.nii.gz')
+
 
 
