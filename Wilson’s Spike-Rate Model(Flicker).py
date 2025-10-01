@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Sep 24 19:40:58 2025
-
 @author: Chetan Mathias
 """
 
@@ -179,5 +177,6 @@ plt.ylim(0, 70)
 plt.tight_layout()
 # plt.suptitle('Flicker-and-Swap (F&S) Rivalry: Monocular and Binocular Neurons', fontsize=14, y=1.03)
 plt.show()
+
 
 
