@@ -13,7 +13,7 @@ Ek = -0.95     # Potassium reversal potential
 g = 26         # Potassium conductance
 C = 1          # Membrane capacitance
 I1 = I2 = I3 = I4 = 0.7  # Input to monocular neurons
-I5 = I6 = 0.7          # No external input to binocular neurons
+I5 = I6 = 0.7          # external input to binocular neurons
 
 # === Synaptic parameters ===
 g_syn = 45.0    # Intra-pair inhibition strength
@@ -159,3 +159,4 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+
