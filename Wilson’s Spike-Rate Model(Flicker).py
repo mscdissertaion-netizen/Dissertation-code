@@ -144,9 +144,7 @@ for t in np.arange(0, time_interval, dt):
 
     time_step += 1
 
-# --------------------
-# Plotting: 3 Separate Subplots
-# --------------------
+# Plotting: 3 Separate Subplots 
 plt.figure(figsize=(14, 5))
 
 # 1. Left Monocular (Vertical)
@@ -181,4 +179,5 @@ plt.ylim(0, 70)
 plt.tight_layout()
 # plt.suptitle('Flicker-and-Swap (F&S) Rivalry: Monocular and Binocular Neurons', fontsize=14, y=1.03)
 plt.show()
+
 
