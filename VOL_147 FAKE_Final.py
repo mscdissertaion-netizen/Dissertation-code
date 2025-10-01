@@ -2,7 +2,7 @@
 """
 Created on Mon Sep  1 21:25:34 2025
 
-@author: mathi
+@author: Chetan Mathias
 """
 
 import SimpleITK as sitk
@@ -177,3 +177,4 @@ amp_img.CopyInformation(func_ref)
 sitk.WriteImage(amp_img, 'amplitude_map.nii.gz')
 
 print("Saved 'phase_delay_map.nii.gz' and 'amplitude_map.nii.gz', aligned to functional data.")
+
