@@ -8,7 +8,7 @@ from numpy.random import default_rng
 import math
 import matplotlib.pyplot as plt
 
-# --- Model Parameters ---
+#  Model Parameters 
 # These parameters control the dynamics of the mutual inhibition system
 betav = 10  # Sensitivity parameter for v's effect on u
 betau = 10  # Sensitivity parameter for u's effect on v
@@ -42,7 +42,7 @@ def u_func(betau, u, hu, tu, tv, u_dominant):
     else:
         return 1 / (1 + np.exp(betau * ((u / tu) - hu)))
 
-# --- Simulation Parameters ---
+#  Simulation Parameters 
 tmax = 100000      # Maximum simulation time
 nt = 200000        # Maximum number of time steps
 rng_seed = 2       # Random number generator seed for reproducibility
@@ -66,7 +66,7 @@ stoichiometry = np.array([
     [0,  0, 1, -1]   # v increases by 1 when activated, decreases by 1 when decaying
 ])
 
-# --- Stimulus Parameters ---
+# Stimulus Parameters 
 stimulus_times = [3000, 40000, 20000]  # Times when stimuli are applied
 stimulus_duration = 200                 # How long each stimulus lasts
 stimulus_strength = 50                  # Strength of the stimulus boost
@@ -76,7 +76,7 @@ suppressed_threshold = 30               # Threshold below which population is co
 current_dominance = u_dominant  # Start with initial dominance state
 stimuli_used = [False for _ in stimulus_times]  # Track which stimuli have been applied
 
-# --- Gillespie Simulation Loop ---
+# Gillespie Simulation Loop 
 # The Gillespie algorithm is a stochastic simulation method for chemical reactions
 j = 0  # Time step counter
 while t[j] < tmax and j < nt - 1:
@@ -133,7 +133,7 @@ t = t[0:j]
 u = variables[0, 0:j]
 v = variables[1, 0:j]
 
-# --- Plot Results ---
+# Plot Results 
 plt.figure(figsize=(14, 10))  
 
 # Plot u population over time
@@ -158,4 +158,5 @@ plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)  
 
 plt.tight_layout()
+
 plt.show()
