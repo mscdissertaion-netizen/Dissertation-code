@@ -6,9 +6,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import convolve
 
-# 
+
 stimulus_type = 'radial'  # options: 'radial', 'concentric', 'spiral'
-# ------------------------------------------------------
+
 
 # Parameters
 N = 42
@@ -41,7 +41,7 @@ elif stimulus_type == 'spiral':
     g = 0.02
     a_facil = a
 
-# ---- Kernel definitions ----
+# Kernel definitions 
 def exp5_kernel_ring(N, a, dx):
     center = N // 2
     indices = np.arange(N)
@@ -61,7 +61,7 @@ if g > 0:
 else:
     W_facil = np.zeros(N)
 
-# ---- Derivative functions ----
+#  Derivative functions 
 def dIT(IT, T): return (-IT + T) / tau_I
 def dIS(IS, S): return (-IS + S) / tau_I
 def dHT(HT, T): return (-HT + 2*T) / tau_H
@@ -69,7 +69,7 @@ def dHS(HS, S): return (-HS + 2*S) / tau_H
 def dT(T, Pplus, H): return (-T + 100 * Pplus**2 / ((10 + H)**2 + Pplus**2)) / tau_E
 def dS(S, Pplus, H): return (-S + 100 * Pplus**2 / ((10 + H)**2 + Pplus**2)) / tau_E
 
-# ---- Initialise arrays ----
+# Initialise arrays 
 T = np.zeros((steps, N))
 S = np.zeros((steps, N))
 IT = np.zeros((steps, N))
@@ -85,7 +85,7 @@ T[0, N==0] = 60
 wave_angles = []
 wave_times = []
 
-# ---- Simulation loop ----
+# Simulation loop 
 for t in range(1, steps):
     IT[t] = IT[t-1] + dt * dIT(IT[t-1], T[t-1])
     IS[t] = IS[t-1] + dt * dIS(IS[t-1], S[t-1])
@@ -116,7 +116,7 @@ for t in range(1, steps):
         wave_angles.append(angle)
         wave_times.append(t * dt / 1000.0)
 
-# ---- Analyse wave propagation ----
+#  Analyse wave propagation 
 wave_times = np.array(wave_times)
 wave_angles = np.array(wave_angles)
 unwrapped_angles = np.unwrap(wave_angles)
@@ -129,13 +129,13 @@ y_pred = slope * wave_times + intercept
 r_squared = 1 - np.sum((unwrapped_pos - y_pred)**2) / np.sum((unwrapped_pos - np.mean(unwrapped_pos))**2)
 speed_deg = slope / 0.6
 
-# ---- Output ----
+#  Output 
 print(f"\nStimulus type: {stimulus_type}")
 print(f"Estimated wave speed: {slope:.2f} cm/s (cortical)")
 print(f"Equivalent to: {speed_deg:.2f} °/s (visual angle)")
 print(f"R² of linear fit: {r_squared:.3f}")
 
-# ---- Plot: Cortical Distance vs Time ----
+# Plot: Cortical Distance vs Time 
 plt.figure(figsize=(10, 4))
 plt.plot(wave_times, unwrapped_pos, label='Wavefront position')
 plt.plot(wave_times, y_pred, 'r--', label=f'Fit: {slope:.2f} cm/s')
@@ -152,4 +152,5 @@ plt.xlabel('Neuron index',fontsize =22)
 plt.ylabel('Time step', fontsize =22)
 plt.title('Wave propagation around the ring')
 plt.colorbar(label='Activity')
+
 plt.show()
