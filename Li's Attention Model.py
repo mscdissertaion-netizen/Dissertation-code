@@ -42,14 +42,14 @@ class NModel:
                           'Unattended plaid', 'Blank before swap', 'Swap with no blank', 'Flicker-and-Swap']
         p['input'] = [0.5, 0.5]
         # Time step and total simulation time
-        p['dt'] = 0.5  # milliseconds
-        p['T'] = 15000  # total simulation time
-        p['nt'] = int(p['T'] / p['dt']) + 1  # number of time points
-        p['tlist'] = np.arange(0, p['T'] + p['dt'], p['dt'])  # time array
+        p['dt'] = 0.5  
+        p['T'] = 15000  
+        p['nt'] = int(p['T'] / p['dt']) + 1 s
+        p['tlist'] = np.arange(0, p['T'] + p['dt'], p['dt'])  
         
         # Spatial and orientation dimensions
-        p['nx'] = 1  # number of spatial positions
-        p['ntheta'] = 2  # number of orientations (A and B)
+        p['nx'] = 1  
+        p['ntheta'] = 2  
 
         # Model architecture parameters
         p['nLayers'] = 6  # total number of layers in the model
@@ -127,10 +127,10 @@ class NModel:
         Defines how stimuli are presented to the left and right eyes over time.
         """
         p = self.p
-        nt = p['nt']  # number of time points
-        dt = p['dt']  # time step
-        theta = p['ntheta']  # number of orientations
-        tlist = p['tlist']  # time array
+        nt = p['nt']  
+        dt = p['dt']  
+        theta = p['ntheta']  
+        tlist = p['tlist']  
 
         def makealpha(dt, T, tau, bound=1e-3):
             """
@@ -308,7 +308,7 @@ class NModel:
             if abs(p['tlist'][idx] % 5000) < p['dt'] / 2:
                 print(f"{p['tlist'][idx]:.0f} msec")
 
-            # --- MONOCULAR LAYERS (1-2) ---
+            # MONOCULAR LAYERS (1-2) 
             for lay in [1, 2]:
                 # Get appropriate stimulus (left eye for layer 1, right for layer 2)
                 stim = p['stimL'][:, idx] if lay == 1 else p['stimR'][:, idx]
@@ -335,7 +335,7 @@ class NModel:
                 p['h'][lay][:, idx] = p['h'][lay][:, idx - 1] + (p['dt'] / p['tau_h']) * (
                     -p['h'][lay][:, idx - 1] + p['r'][lay][:, idx - 1] * p['wh'])
 
-            # --- BINOCULAR AND OPPONENCY LAYERS (3-5) ---
+            # BINOCULAR AND OPPONENCY LAYERS (3-5) 
             for lay in [3, 4, 5]:
                 if lay == 3:  # Binocular summation layer
                     inp = p['r'][1][:, idx - 1] + p['r'][2][:, idx - 1]  # sum both eyes
@@ -370,7 +370,7 @@ class NModel:
                     elif lay == 5:  # Inhibit left eye monocular layer
                         p['o'][1][:, idx] = np.sum(p['r'][lay][:, idx])
 
-            # --- ATTENTION LAYER (6) ---
+            # ATTENTION LAYER (6) 
             inp = p['r'][3][:, idx]  # input from binocular layer
             # Cross-orientation interactions using kernel
             aDrive = np.abs(p['aKernel'] @ inp)  # absolute drive
@@ -448,4 +448,5 @@ class NModel:
 # Run the model and plot the results
 model = NModel(cond=7)  # Create model with condition 7 (Flicker-and-Swap)
 model.run_model()       # Run the simulation
+
 model.plot_time_series()  # Plot the results
