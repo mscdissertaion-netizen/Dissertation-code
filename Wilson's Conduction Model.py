@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
-# === Constants ===
+# Constants 
 Ena = 0.5      # Sodium reversal potential
 Ek = -0.95     # Potassium reversal potential
 g = 26         # Potassium conductance
@@ -15,20 +15,20 @@ C = 1          # Membrane capacitance
 I1 = I2 = I3 = I4 = 0.7  # Input to monocular neurons
 I5 = I6 = 0.7          # external input to binocular neurons
 
-# === Synaptic parameters ===
+# Synaptic parameters 
 g_syn = 45.0    # Intra-pair inhibition strength
 g_cross = 15.0  # Cross-pair inhibition strength
 g_fb = 10.0     # Feedback inhibition from binocular neurons
 g_bin = 45.0    # Mutual inhibition between binocular neurons
 tau_syn = 2     # Synaptic time constant
 
-# === Gating functions ===
+# Gating functions 
 def Rin(V): return 1.24 + 3.7 * V + 3.2 * (V ** 2)
 def Tin(V): return 8 * ((V + 0.725) ** 2)
 def m(V): return 17.8 + 47.6 * V + 33.8 * (V ** 2)
 def heaviside(x): return 1.0 if x > 0 else 0.0
 
-# === ODE system for 6 neurons with full dynamics ===
+# ODE system for 6 neurons with full dynamics 
 def rivalry_model_6neurons_full(t, y):
     V1, R1, T1, H1, f1, S1, \
     V2, R2, T2, H2, f2, S2, \
@@ -37,7 +37,7 @@ def rivalry_model_6neurons_full(t, y):
     V5, R5, T5, H5, f5, S5, \
     V6, R6, T6, H6, f6, S6 = y
 
-    # === Monocular Neurons ===
+    #  Monocular Neurons 
     dV1_dt = (-m(V1)*(V1 - Ena) - g*R1*(V1 - Ek) - 0.1*T1*(V1 - 1.2) - 2.5*H1*(V1 - Ek)
               - g_syn*S2*(V1 - Ek) - g_cross*S3*(V1 - Ek) - g_fb*S6*(V1 - Ek) + I1) / C
     dR1_dt = (-R1 + Rin(V1)) / 1.5
@@ -70,7 +70,7 @@ def rivalry_model_6neurons_full(t, y):
     df4_dt = (-f4 + heaviside(V4 + 0.1)) / tau_syn
     dS4_dt = (-S4 + f4) / tau_syn
 
-    # === Binocular Neuron N5 ===
+    # Binocular Neuron N5 
     dV5_dt = (-m(V5)*(V5 - Ena) - g*R5*(V5 - Ek) - 0.1*T5*(V5 - 1.2) - 2.5*H5*(V5 - Ek)
               + 1.2*(S1 + S2) - g_bin*S6*(V5 - Ek) - 0.05*V5 + I5) / C
     dR5_dt = (-R5 + Rin(V5)) / 1.5
@@ -79,7 +79,7 @@ def rivalry_model_6neurons_full(t, y):
     df5_dt = (-f5 + heaviside(V5 + 0.1)) / tau_syn
     dS5_dt = (-S5 + f5) / tau_syn
 
-    # === Binocular Neuron N6 ===
+    # Binocular Neuron N6 
     dV6_dt = (-m(V6)*(V6 - Ena) - g*R6*(V6 - Ek) - 0.1*T6*(V6 - 1.2) - 2.5*H6*(V6 - Ek)
               + 1.2*(S3 + S4) - g_bin*S5*(V6 - Ek) - 0.05*V6 + I6) / C
     dR6_dt = (-R6 + Rin(V6)) / 1.5
@@ -95,7 +95,7 @@ def rivalry_model_6neurons_full(t, y):
             dV5_dt, dR5_dt, dT5_dt, dH5_dt, df5_dt, dS5_dt,
             dV6_dt, dR6_dt, dT6_dt, dH6_dt, df6_dt, dS6_dt]
 
-# === Initial Conditions ===
+#  Initial Conditions 
 y0 = [-0.75, 1.2, 0.03, 0.15, 0.0, 0.0,   # N1
       -0.7, 1.1, 0.02, 0.14, 0.0, 0.0,    # N2
       -0.72, 1.15, 0.025, 0.145, 0.0, 0.0,# N3
@@ -103,17 +103,17 @@ y0 = [-0.75, 1.2, 0.03, 0.15, 0.0, 0.0,   # N1
       -0.6, 1.0, 0.02, 0.1, 0.0, 0.0,     # N5
       -0.6, 1.0, 0.02, 0.1, 0.0, 0.0]     # N6
 
-# === Time Setup ===
+#  Time Setup 
 t_start = 0
 t_end = 6000
 dt = 0.1
 t_eval = np.arange(t_start, t_end, dt)
 tspan = [t_start, t_end]
 
-# === Solve System ===
+#  Solve System 
 sol = solve_ivp(rivalry_model_6neurons_full, tspan, y0, t_eval=t_eval)
 
-# === Extract Voltages ===
+#  Extract Voltages 
 V1 = sol.y[0] * 100
 V2 = sol.y[6] * 100
 V3 = sol.y[12] * 100
@@ -121,7 +121,7 @@ V4 = sol.y[18] * 100
 V5 = sol.y[24] * 100
 V6 = sol.y[30] * 100
 
-# === Plot Membrane Potentials ===
+#  Plot Membrane Potentials 
 plt.figure(figsize=(12, 6))
 # plt.plot(sol.t, V1, label="N1 (Left Mono)")
 # plt.plot(sol.t, V2, label="N2 (Left Mono)")
@@ -137,7 +137,7 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# === Plot Synaptic Outputs ===
+#  Plot Synaptic Outputs 
 S1 = sol.y[5]
 S2 = sol.y[11]
 S3 = sol.y[17]
@@ -159,4 +159,5 @@ plt.legend()
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+
 
