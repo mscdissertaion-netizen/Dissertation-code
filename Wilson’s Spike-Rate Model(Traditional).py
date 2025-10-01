@@ -84,7 +84,7 @@ def E_dot_bin(tau, P, H, E):
 for t in np.arange(0, time_interval, dt):
     time.append(t)
 
-    # --- Monocular Stage ---
+    # Monocular Stage 
     # Left eye (vertical)
     P_Vleft = E_V - I_wt_mono * I_Hright[time_step]
     P_Vleft = max(0, P_Vleft)
@@ -113,7 +113,7 @@ for t in np.arange(0, time_interval, dt):
     I_Hright.append(I_Hright_new)
     H_Hright.append(H_Hright_new)
     
-    # --- Binocular Stage ---
+    #  Binocular Stage 
     # For vertical binocular neuron:
     P_Vbin = mon_to_bin_gain * Vleft - I_wt_bin * I_Hbin[time_step]
     P_Vbin = max(0, P_Vbin)
@@ -191,4 +191,5 @@ plt.ylim(0, 85)
 
 plt.tight_layout()
 # plt.suptitle('Hierarchical Rivalry Dynamics', fontsize=20, y=1.02)
+
 plt.show()
